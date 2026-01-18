@@ -1,5 +1,5 @@
 import React from "react";
-import { Trash2, User } from "lucide-react";
+import { Trash2, User, Edit } from "lucide-react"; // Added 'Edit' icon
 import type { Patient } from "../../types/patient";
 import { Button } from "../common/Button";
 
@@ -7,12 +7,14 @@ interface PatientListProps {
   patients: Patient[];
   isLoading: boolean;
   onDelete: (id: string) => void;
+  onEdit: (patient: Patient) => void; // ✅ NEW: Required for updating
 }
 
 export const PatientList: React.FC<PatientListProps> = ({
   patients,
   isLoading,
   onDelete,
+  onEdit, // ✅ NEW
 }) => {
   if (isLoading) {
     return (
@@ -40,7 +42,11 @@ export const PatientList: React.FC<PatientListProps> = ({
             <th className="px-6 py-4 font-medium text-gray-700">Name</th>
             <th className="px-6 py-4 font-medium text-gray-700">Age/Gender</th>
             <th className="px-6 py-4 font-medium text-gray-700">Diagnosis</th>
-            <th className="px-6 py-4 font-medium text-gray-700">Actions</th>
+            <th className="px-6 py-4 font-medium text-gray-700">Status</th>{" "}
+            {/* ✅ NEW Column */}
+            <th className="px-6 py-4 font-medium text-gray-700 text-right">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
@@ -60,7 +66,32 @@ export const PatientList: React.FC<PatientListProps> = ({
                   {patient.diagnosis}
                 </span>
               </td>
+              {/* ✅ NEW: Status Badge */}
               <td className="px-6 py-4">
+                <span
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                    ${
+                      patient.status === "Discharged"
+                        ? "bg-green-100 text-green-800"
+                        : patient.status === "ICU"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-gray-100 text-gray-800"
+                    }`}
+                >
+                  {patient.status || "Admitted"}
+                </span>
+              </td>
+
+              <td className="px-6 py-4 text-right flex justify-end gap-2">
+                {/* ✅ NEW: Edit Button */}
+                <Button
+                  variant="outline"
+                  className="p-2 h-auto text-blue-600 hover:bg-blue-50 border-blue-100"
+                  onClick={() => onEdit(patient)}
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+
                 <Button
                   variant="outline"
                   className="p-2 h-auto text-red-600 hover:bg-red-50 border-red-100"
