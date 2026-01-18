@@ -3,7 +3,8 @@
 
 import axios from 'axios';
 
-const BASE_URL = "https://pesapal-database-challange-1.onrender.com";
+// const BASE_URL = "https://pesapal-database-challange-1.onrender.com/api";
+const BASE_URL = "http://localhost:10000/api";
 export const axiosClient = axios.create({
     baseURL: BASE_URL,
   headers: {
