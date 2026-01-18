@@ -3,23 +3,42 @@
 import { axiosClient } from "./axiosClient";
 import type { Patient, NewPatientPayload } from "../types/patient";
 
-export const PatienAPI = {
-  // Get all patients
+export const patientAPI = {
+  // Changed name to standard camelCase 'patientApi'
+  // 1. Get all patients
   getAll: async (): Promise<Patient[]> => {
-    // the generic data it matches the backened response format
-    const response = await axiosClient.get<{ success: boolean; data: Patient[] }>("/patient");
+    // ✅ FIXED: Changed "/patient" to "/patients"
+    const response = await axiosClient.get<{
+      success: boolean;
+      data: Patient[];
+    }>("/patients");
+    // Depending on your backend, the array might be directly in response.data or response.data.data
+    // This handles both cases safely:
+    if (Array.isArray(response.data)) return response.data;
     return response.data.data || [];
   },
 
-  // Add a new patient
+  // 2. Add a new patient
   create: async (patient: NewPatientPayload) => {
-    const response = await axiosClient.post<{success: boolean; data:Patient}>('/patiens', patient)
-    return response.data.data;
+    // ✅ FIXED: Changed "/patiens" to "/patients"
+    const response = await axiosClient.post<{
+      success: boolean;
+      data: Patient;
+    }>("/patients", patient);
+    return response.data;
   },
 
-  // Discharge patient/ b=delete patient
-  delete: async (id:string) =>{
+  // 3. Discharge patient (Delete)
+  delete: async (id: string) => {
+    // ✅ This was already correct!
     const response = await axiosClient.delete(`/patients/${id}`);
     return response.data;
-  }
+  },
+
+  // 4. Update patient (For the Edit feature)
+  update: async (patient: Partial<Patient>) => {
+    // ✅ NEW: Added this so your Edit button works
+    const response = await axiosClient.put("/patients", patient);
+    return response.data;
+  },
 };
