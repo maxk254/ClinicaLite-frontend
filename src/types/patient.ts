@@ -7,10 +7,10 @@ export interface Patient {
   age: ReactNode;
   id: string;
   name: String;
-  gender: 'Male' | 'Female';
+  gender: "Male" | "Female";
   diagnosis: string;
-  status: 'Admitted' | 'Discharge' | 'Pending';
-  admissionDate: string; 
+  status: "Admitted" | "Discharged" | "Pending" | "ICU";
+  admissionDate: string;
 }
 
 export interface NewPatientPayload {
