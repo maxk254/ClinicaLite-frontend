@@ -3,8 +3,8 @@ import { toast } from "react-hot-toast"; // The notification library
 import { Button } from "../common/Button";
 import { Input } from "../common/Input";
 import type { NewPatientPayload } from "../../types/patient";
-import { PatienAPI } from "../../api/patientApi";
-// import { PatientAPI } from "../../api/patientApi";
+import { patientAPI } from "../../api/patientApi";
+// import { patientAPI } from "../../api/patientApi";
 
 interface PatientFormProps {
   onSuccess: () => void; // Tell the parent (Dashboard) to refresh the list
@@ -36,7 +36,7 @@ export const PatientForm: React.FC<PatientFormProps> = ({ onSuccess }) => {
       setIsLoading(true);
       console.log("🚀 Sending Data:", formData); // Debug 1
 
-      await PatienAPI.create(formData);
+      await patientAPI.create(formData);
 
       toast.success("Patient admitted successfully!");
       setFormData({
