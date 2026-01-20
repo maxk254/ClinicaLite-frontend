@@ -1,21 +1,17 @@
 //  Specific calls: getPatients(), addPatient()
 
+//  Specific calls: getPatients(), addPatient()
+
 import { axiosClient } from "./axiosClient";
-import type { Patient, NewPatientPayload } from "../types/patient";
+import type { Patient, NewPatientPayload, PatientsResponse } from "../types/patient";
 
 export const patientAPI = {
-  // Changed name to standard camelCase 'patientApi'
-  // 1. Get all patients
-  getAll: async (): Promise<Patient[]> => {
-    // ✅ FIXED: Changed "/patient" to "/patients"
-    const response = await axiosClient.get<{
-      success: boolean;
-      data: Patient[];
-    }>("/patients");
-    // Depending on your backend, the array might be directly in response.data or response.data.data
-    // This handles both cases safely:
-    if (Array.isArray(response.data)) return response.data;
-    return response.data.data || [];
+  
+  // 1. Get all patient limit per page is 10
+  getAll: async (page = 1, limit = 10, search = "") => {
+    // Send ?page=1&limit=10 to the server
+    const response = await axiosClient.get<PatientsResponse>(`/patients?page=${page}&limit=${limit}&search=${search}`);
+    return response.data; // Return the whole object (data + pagination info)
   },
 
   // 2. Add a new patient
