@@ -21,3 +21,15 @@ export interface NewPatientPayload {
   diagnosis: string;
   status: string;
 }
+
+// Defing response structure
+
+export interface PatientsResponse {
+  success: boolean;
+  data:Patient[];
+  pagination: {
+    total: number;
+    page: number;
+    totalPages : number;
+  };
+}
