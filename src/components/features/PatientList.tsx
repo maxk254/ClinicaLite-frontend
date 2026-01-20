@@ -103,7 +103,7 @@ export const PatientList: React.FC<PatientListProps> = ({
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
-  );
+    </table>
+  </div>
+);
 };
